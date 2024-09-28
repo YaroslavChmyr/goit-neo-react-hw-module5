@@ -1,37 +1,25 @@
 import css from "./MovieCast.module.css";
-
-const cast = [
-  {
-    adult: false,
-    gender: 2,
-    id: 592463,
-    known_for_department: "Acting",
-    name: "Cory Richards",
-    original_name: "Cory Richards",
-    popularity: 0.403,
-    profile_path: "/zWsHpTQfuD6axsMDzOiDX7bEnKy.jpg",
-    cast_id: 1002,
-    character: "Himself",
-    credit_id: "52fe482b9251416c91082a7b",
-    order: 0,
-  },
-  {
-    adult: false,
-    gender: 2,
-    id: 592465,
-    known_for_department: "Acting",
-    name: "Denis Urubko",
-    original_name: "Denis Urubko",
-    popularity: 1.147,
-    profile_path: "/Aojsa4W2gD0F1YyYJ9hpJfowobD.jpg",
-    cast_id: 1004,
-    character: "Himself",
-    credit_id: "52fe482b9251416c91082a83",
-    order: 1,
-  },
-];
+import { useParams } from "react-router-dom";
+import { getMovieCast } from "../../services/api";
+import { useEffect, useState } from "react";
 
 const MovieCast = () => {
+  const { movieId } = useParams();
+  const [cast, setCast] = useState([]);
+
+  useEffect(() => {
+    const fetchCastDetails = async () => {
+      const data = await getMovieCast(movieId);
+      if (data) {
+        setCast(data);
+      }
+    };
+
+    fetchCastDetails();
+  }, [movieId]);
+
+  if (!cast) return <p>Loading...</p>;
+
   return (
     <ul className={css.list}>
       {cast.map((actor) => (
