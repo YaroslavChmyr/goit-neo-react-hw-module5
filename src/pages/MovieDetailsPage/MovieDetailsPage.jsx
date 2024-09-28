@@ -1,4 +1,5 @@
 import Navigation from "../../components/Navigation/Navigation";
+import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import css from "./MovieDetailsPage.module.css";
 
 const movie = {
@@ -65,29 +66,65 @@ const movie = {
 };
 
 const MovieDetailsPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleGoBack = () => {
+    if (location.state && location.state.from) {
+      navigate(location.state.from);
+    } else {
+      console.log(location.state);
+      navigate("/movies");
+    }
+  };
   return (
     <>
-    <Navigation />
-    <div className={css.container}>
-      <div className={css.poster}>
-        <img
-          src={`https://image.tmdb.org/t/p/w185${movie.poster_path}`}
-          alt={movie.title}
-        />
+      <Navigation />
+      <button onClick={handleGoBack} className={css.goBackButton}>
+        Go Back
+      </button>
+      <div className={css.movieDetailsContainer}>
+        <div className={css.poster}>
+          <img
+            src={`https://image.tmdb.org/t/p/w185${movie.poster_path}`}
+            alt={movie.title}
+          />
+        </div>
+        <div className={css.info}>
+          <h1 className={css.title}>
+            {movie.title} ({movie.release_date.slice(0, 4)})
+          </h1>
+          <p>User score: {movie.vote_average * 10}%</p>
+          <h2 className={css.subtitle}>Overview</h2>
+          <p>{movie.overview}</p>
+          <h2 className={css.subtitle}>Genres</h2>
+          <ul className={css.genres}>
+            {movie.genres.map((genre) => (
+              <li key={genre.id}>{genre.name}</li>
+            ))}
+          </ul>
+        </div>
       </div>
-      <div className={css.info}>
-        <h1 className={css.title}>{movie.title} ({movie.release_date.slice(0, 4)})</h1>
-        <p>User score: {movie.vote_average * 10}%</p>
-        <h2 className={css.subtitle}>Overview</h2>
-        <p>{movie.overview}</p>
-        <h2 className={css.subtitle}>Genres</h2>
-        <ul className={css.genres}>
-          {movie.genres.map((genre) => (
-            <li key={genre.id}>{genre.name}</li>
-          ))}
+      <div className={css.additionalInfo}>
+        <p>Additional information</p>
+        <ul className={css.links}>
+          <Link
+            to="cast"
+            className={css.link}
+            state={{ from: location.state?.from || "/movies" }}
+          >
+            Cast
+          </Link>
+          <Link
+            to="reviews"
+            className={css.link}
+            state={{ from: location.state?.from || "/movies" }}
+          >
+            Reviews
+          </Link>
         </ul>
       </div>
-    </div>
+      <Outlet />
     </>
   );
 };

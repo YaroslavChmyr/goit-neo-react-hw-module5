@@ -1,6 +1,13 @@
-.container {
+.goBackButton {
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.movieDetailsContainer {
   display: flex;
   gap: 25px;
+  border-bottom: 1px solid rgb(0, 0, 0, 0.1);
+  padding-bottom: 10px;
 }
 
 .info {
@@ -13,4 +20,26 @@
 .genres {
   display: flex;
   gap: 10px;
+}
+
+.additionalInfo {
+  padding-top: 20px;
+  border-bottom: 1px solid rgb(0, 0, 0, 0.5);
+}
+
+.links {
+  list-style: initial;
+  padding: 20px 40px;
+  margin: initial;
+}
+
+.link {
+  color: blue;
+  margin-bottom: 3px;
+  text-decoration: underline;
+  display: list-item;
+}
+
+.link::marker {
+  color: black;
 }
