@@ -1,4 +1,3 @@
-import Navigation from "../../components/Navigation/Navigation";
 import MovieList from "../../components/MovieList/MovieList";
 import { getTrendingMovies } from "../../services/api";
 import { useEffect, useState } from "react";
@@ -23,7 +22,6 @@ const HomePage = () => {
 
   return (
     <div>
-      <Navigation />
       <h1 className={css.title}>Trending today</h1>
       <MovieList movies={movies} />
     </div>

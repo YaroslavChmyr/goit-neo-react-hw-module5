@@ -1,42 +1,30 @@
-import css from './MoviesPage.module.css';
-import { searchMovies } from '../../services/api';
-import Navigation from '../../components/Navigation/Navigation';
-import MovieList from '../../components/MovieList/MovieList';
-import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import css from "./MoviesPage.module.css";
+import { searchMovies } from "../../services/api";
+import MovieList from "../../components/MovieList/MovieList";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get("query") || "";
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.currentTarget;
-    const query = form.elements.query.value.trim();
+    const queryValue = form.elements.query.value.trim();
 
-    if (query === "") {
+    if (queryValue === "") {
       form.reset();
       return;
     }
 
-    navigate(`?query=${query}`);
+    setSearchParams({ query: queryValue });
 
-    const fetchMovies = async () => {
-      const data = await searchMovies(query);
-      if (data) {
-        setMovies(data);
-      }
-    };
-
-    fetchMovies();
     form.reset();
   };
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const query = queryParams.get('query');
-
     if (query) {
       const fetchMovies = async () => {
         const data = await searchMovies(query);
@@ -46,11 +34,10 @@ const MoviesPage = () => {
       };
       fetchMovies();
     }
-  }, [location.search]);
+  }, [query]);
 
   return (
     <div>
-      <Navigation />
       <form onSubmit={handleSubmit} className={css.searchBar}>
         <div className={css.inputContainer}>
           <input
@@ -58,6 +45,7 @@ const MoviesPage = () => {
             autoComplete="off"
             autoFocus
             name="query"
+            defaultValue={query}
             className={css.searchInput}
           />
           <button type="submit" className={css.button}>

@@ -1,4 +1,3 @@
-import Navigation from "../../components/Navigation/Navigation";
 import {
   Link,
   Outlet,
@@ -40,7 +39,6 @@ const MovieDetailsPage = () => {
 
   return (
     <>
-      <Navigation />
       <button onClick={handleGoBack} className={css.goBackButton}>
         Go Back
       </button>
